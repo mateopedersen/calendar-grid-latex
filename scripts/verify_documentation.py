@@ -9,8 +9,9 @@ if not pdf.is_file() or pdf.stat().st_size < 10_000:
     raise SystemExit("calendar-grid-doc.pdf is missing or unexpectedly small")
 if pdf.read_bytes()[:5] != b"%PDF-":
     raise SystemExit("calendar-grid-doc.pdf has no PDF signature")
-log = root / "calendar-grid-doc.log"
-if not log.is_file():
+logs = [root / "calendar-grid-doc.log", *root.glob("build/**/calendar-grid-doc.log")]
+log = next((candidate for candidate in logs if candidate.is_file()), None)
+if log is None:
     raise SystemExit("calendar-grid-doc.log is missing; cannot verify the generated page count")
 match = re.search(r"Output written on .*?\((\d+) pages?\)\.", log.read_text(errors="replace"))
 if not match:
