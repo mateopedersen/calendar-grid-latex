@@ -9,6 +9,25 @@ engines = ("pdflatex", "xelatex", "lualatex")
 examples = sorted(root.glob("calendar-grid-example-*.tex"))
 if len(examples) != 5:
     raise SystemExit(f"Expected five examples, found {len(examples)}")
+
+
+def compile_source(engine, source, output_dir):
+    command = [
+        engine,
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "-file-line-error",
+        f"-output-directory={output_dir}",
+        str(source),
+    ]
+    result = subprocess.run(
+        command, cwd=root, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
+    )
+    if result.returncode:
+        print(result.stdout)
+        raise SystemExit(f"{engine} failed to compile {source.name}")
+
+
 with tempfile.TemporaryDirectory(prefix="calendar-grid-api-") as temp:
     from pathlib import Path
     consumer = Path(temp) / "api-check.tex"
@@ -23,22 +42,12 @@ with tempfile.TemporaryDirectory(prefix="calendar-grid-api-") as temp:
 \end{document}
 """)
     for engine in engines:
-        subprocess.run(
-            [engine, "-interaction=nonstopmode", "-halt-on-error", "-file-line-error", f"-output-directory={temp}", str(consumer)],
-            cwd=root, check=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
-        )
+        compile_source(engine, consumer, temp)
         print(f"PASS {engine} public API, events, ranges, month and year rendering")
 for engine in engines:
     for example in examples:
         with tempfile.TemporaryDirectory(prefix="calendar-grid-example-") as temp:
-            subprocess.run(
-                [engine, "-interaction=nonstopmode", "-halt-on-error", "-file-line-error", f"-output-directory={temp}", str(example)],
-                cwd=root,
-                check=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-                text=True,
-            )
+            compile_source(engine, example, temp)
             if not (Path(temp) / f"{example.stem}.pdf").is_file():
                 raise SystemExit(f"{engine} produced no PDF for {example.name}")
         print(f"PASS {engine} {example.name}")
