@@ -146,9 +146,11 @@
     \regex_extract_once:nnNTF {\A([0-9]{4})-([0-9]{2})-([0-9]{2})\Z}
       {#1} \l__cg_date_match_seq
       {
+        \iow_term:x { CGDEBUG~regex=\seq_use:Nn \l__cg_date_match_seq {|} }
         \int_set:Nn \l__cg_date_year_int {\seq_item:Nn \l__cg_date_match_seq {2}}
         \int_set:Nn \l__cg_date_month_int {\seq_item:Nn \l__cg_date_match_seq {3}}
         \int_set:Nn \l__cg_date_day_int {\seq_item:Nn \l__cg_date_match_seq {4}}
+        \iow_term:x { CGDEBUG~date=\int_use:N\l__cg_date_year_int-\int_use:N\l__cg_date_month_int-\int_use:N\l__cg_date_day_int }
         \int_compare:nNnT {\l__cg_date_year_int} > {0}
           {
             \int_compare:nNnT {\l__cg_date_year_int} < {10000}
