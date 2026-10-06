@@ -371,7 +371,7 @@
     \__cg_serial:nnnN {\l__cg_year_int}{\l__cg_month_int}{1}\l__cg_serial_int
     \int_set:Nn \l__cg_first_weekday_int {\int_mod:nn {\l__cg_serial_int}{7}+1}
     \int_set:Nn \l__cg_offset_int
-      {\int_mod:nn {\l__cg_first_weekday_int-\l__cg_week_start_int}{7}}
+      {\int_mod:nn {\l__cg_first_weekday_int-\l__cg_week_start_int+7}{7}}
     \tl_if_eq:NnTF \l__cg_layout_tl {fixed}
       {\int_set:Nn \l__cg_rows_int {6}}
       {\int_set:Nn \l__cg_rows_int {\int_div_truncate:nn {\l__cg_offset_int+\l__cg_month_days_int+6}{7}}}
