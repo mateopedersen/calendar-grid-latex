@@ -146,11 +146,9 @@
     \regex_extract_once:nnNTF {\A([0-9]{4})-([0-9]{2})-([0-9]{2})\Z}
       {#1} \l__cg_date_match_seq
       {
-        \iow_term:x { CGDEBUG~regex=\seq_use:Nn \l__cg_date_match_seq {|} }
         \int_set:Nn \l__cg_date_year_int {\seq_item:Nn \l__cg_date_match_seq {2}}
         \int_set:Nn \l__cg_date_month_int {\seq_item:Nn \l__cg_date_match_seq {3}}
         \int_set:Nn \l__cg_date_day_int {\seq_item:Nn \l__cg_date_match_seq {4}}
-        \iow_term:x { CGDEBUG~date=\int_use:N\l__cg_date_year_int-\int_use:N\l__cg_date_month_int-\int_use:N\l__cg_date_day_int }
         \int_compare:nNnT {\l__cg_date_year_int} > {0}
           {
             \int_compare:nNnT {\l__cg_date_year_int} < {10000}
@@ -162,7 +160,7 @@
                         \__cg_days_in_month:nnN {\l__cg_date_year_int}
                           {\l__cg_date_month_int} \l__cg_month_days_int
                         \int_compare:nNnT {\l__cg_date_day_int} > {0}
-                          {\int_compare:nNnT {\l__cg_date_day_int} <= {\l__cg_month_days_int}
+                          {\int_compare:nNnT {\l__cg_date_day_int} < {\l__cg_month_days_int+1}
                             {\bool_set_true:N \l__cg_date_valid_bool}}
                       }
                   }
@@ -291,9 +289,9 @@
       {
         \prop_get:NnN \g__cg_ranges_start_prop {##1}\l_tmpa_tl
         \prop_get:NnN \g__cg_ranges_end_prop {##1}\l_tmpb_tl
-        \int_compare:nNnT {\l__cg_cell_serial_int} >= {\l_tmpa_tl}
+        \int_compare:nNnT {\l__cg_cell_serial_int} > {\l_tmpa_tl-1}
           {
-            \int_compare:nNnT {\l__cg_cell_serial_int} <= {\l_tmpb_tl}
+            \int_compare:nNnT {\l__cg_cell_serial_int} < {\l_tmpb_tl+1}
               {
                 \prop_get:NnN \g__cg_ranges_style_prop {##1}\l_tmpc_tl
                 \seq_if_in:NVTF \l__cg_active_range_styles_seq \l_tmpc_tl
@@ -443,7 +441,8 @@
     \__cg_date_serial:nN {#3}\l_tmpb_int
     \bool_if:nT {\l_tmpa_bool && \l__cg_date_valid_bool}
       {
-        \int_compare:nNnTF {\l_tmpa_int} <= {\l_tmpb_int}
+        \int_compare:nNnTF {\l_tmpa_int} > {\l_tmpb_int}
+          {\msg_error:nnnn {calendar-grid}{reversed-range}{#2}{#3}}
           {
             \int_gincr:N \g__cg_range_id_int
             \tl_set:Nx \l_tmpc_tl {\int_use:N \g__cg_range_id_int}
@@ -452,7 +451,6 @@
             \prop_gput:NVx \g__cg_ranges_end_prop \l_tmpc_tl {\int_use:N \l_tmpb_int}
             \prop_gput:NVV \g__cg_ranges_style_prop \l_tmpc_tl \l__cg_range_style_tl
           }
-          {\msg_error:nnnn {calendar-grid}{reversed-range}{#2}{#3}}
       }
     \group_end:
   }
