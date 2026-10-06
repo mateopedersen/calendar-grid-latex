@@ -13,7 +13,7 @@ testfiledir = "."
 checkengines = {"pdftex", "xetex", "luatex"}
 stdengine = "pdftex"
 checkruns = 1
-checksearch = false
+checksearch = true
 typesetexe = "xelatex"
 typesetopts = "-interaction=nonstopmode -halt-on-error -file-line-error"
 ctanpkg = "calendar-grid"
