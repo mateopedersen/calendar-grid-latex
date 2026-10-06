@@ -41,7 +41,7 @@
   {
     \int_set:Nn\l__cg_week_start_int{#1}
     \__cg_compute_layout:
-    \int_compare:nNnF{\l__cg_offset_int}={\int_case:nn{#1}{{1}{5}{2}{4}{3}{3}{4}{2}{5}{1}{6}{0}{7}{6}}}
+    \int_compare:nNnF{\l__cg_offset_int}={\int_case:nn{#1}{{1}{4}{2}{3}{3}{2}{4}{1}{5}{0}{6}{6}{7}{5}}}
       {\__cg_test_fail:n{week-start~offset~#1}}
     \int_compare:nNnF{\l__cg_rows_int}={6}{\__cg_test_fail:n{fixed~row~count~#1}}
     \int_compare:nNnF{\l__cg_cells_int}={42}{\__cg_test_fail:n{fixed~cell~count~#1}}
@@ -65,7 +65,7 @@
 \keys_set:nn{calendar-grid}{year=2026,month=2,week-start=monday,layout=compact}
 \__cg_compute_layout:
 \int_compare:nNnF{\l__cg_rows_int}={5}{\__cg_test_fail:n{compact~February~2026~rows}}
-\keys_set:nn{calendar-grid}{year=2027,month=1,week-start=monday,layout=compact}
+\keys_set:nn{calendar-grid}{year=2027,month=1,week-start=sunday,layout=compact}
 \__cg_compute_layout:
 \int_compare:nNnF{\l__cg_rows_int}={6}{\__cg_test_fail:n{compact~January~2027~rows}}
 \TYPE{Compact~four-,~five-,~and~six-week~grids~passed}
