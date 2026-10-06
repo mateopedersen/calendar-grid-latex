@@ -15,9 +15,30 @@ jobs:
       - uses: actions/checkout@v6
       - uses: xu-cheng/texlive-action@v3
         with:
+          texlive_version: latest
+          os: debian
           scheme: full
           run: |
+            cd "$GITHUB_WORKSPACE"
+            echo "TeX Live: $(tlmgr --version | sed -n '1p')"
+            pdflatex --version | sed -n '1p'
+            xelatex --version | sed -n '1p'
+            lualatex --version | sed -n '1p'
+            kpsewhich l3build.lua
+            l3build --version || kpsewhich l3build.lua
             l3build check
             l3build doc
+            test -s calendar-grid-doc.pdf
+            python3 scripts/verify_documentation.py
+            python3 scripts/compile_examples.py
+            python3 scripts/verify_installation.py
             l3build ctan
             python3 scripts/verify_ctan_archive.py
+            python3 scripts/release_report.py | tee release-checksums.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: calendar-grid-1.0.0-release-files
+          path: |
+            calendar-grid-doc.pdf
+            calendar-grid-1.0.0.zip
+            release-checksums.txt

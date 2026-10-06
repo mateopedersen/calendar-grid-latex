@@ -2,18 +2,20 @@
 -- This work is distributed under the LaTeX Project Public License 1.3c or later.
 module = "calendar-grid"
 bundle = "calendar-grid"
-sourcefiles = {"calendar-grid.sty", "build.lua", "calendar-grid-regression.lvt", "calendar-grid-regression.tlg", "scripts/verify_ctan_archive.py"}
+sourcefiles = {"calendar-grid.sty", "build.lua", "scripts/*.py"}
 installfiles = {"calendar-grid.sty"}
 typesetfiles = {"calendar-grid-doc.tex"}
 typesetsourcefiles = {"calendar-grid.sty"}
 demofiles = {"calendar-grid-example-*.tex"}
-docfiles = {"calendar-grid-regression.lvt", "calendar-grid-regression.tlg"}
+docfiles = {"testfiles/*.lvt", "testfiles/*.tlg"}
 textfiles = {"README.md", "LICENSE", "CHANGELOG.md", "manifest.txt"}
 testfiledir = "."
 checkengines = {"pdftex", "xetex", "luatex"}
 stdengine = "pdftex"
 checkruns = 1
 checksearch = false
+typesetexe = "xelatex"
+typesetopts = "-interaction=nonstopmode -halt-on-error -file-line-error"
 ctanpkg = "calendar-grid"
 ctanreadme = "README.md"
 ctanzip = "calendar-grid-1.0.0"

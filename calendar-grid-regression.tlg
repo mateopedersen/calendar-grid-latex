@@ -4,6 +4,7 @@ Gregorian leap-year checks passed
 Month-length checks passed
 Weekday checks passed
 All seven week-starts and fixed 42-cell grids passed
+Fixed 42-cell checks passed
 Compact four-, five-, and six-week grids passed
 Invalid-date rejection passed
 Adjacent-month overflow passed

@@ -15,3 +15,8 @@ calendar-grid-example-events.tex
 calendar-grid-example-ranges.tex
 calendar-grid-regression.lvt
 calendar-grid-regression.tlg
+scripts/compile_examples.py
+scripts/release_report.py
+scripts/verify_ctan_archive.py
+scripts/verify_documentation.py
+scripts/verify_installation.py

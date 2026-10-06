@@ -21,10 +21,10 @@
 \TYPE{Gregorian~leap-year~checks~passed}
 \int_step_inline:nn {12}
   {
-    \__cg_days_in_month:nnN {2027}{##1}\l__cg_month_days_int
+    \__cg_days_in_month:nnN {2027}{#1}\l__cg_month_days_int
     \int_compare:nNnF {\l__cg_month_days_int} =
-      {\int_case:nn {##1}{{1}{31}{2}{28}{3}{31}{4}{30}{5}{31}{6}{30}{7}{31}{8}{31}{9}{30}{10}{31}{11}{30}{12}{31}}}
-      {\__cg_test_fail:n{month~length~##1}}
+      {\int_case:nn {#1}{{1}{31}{2}{28}{3}{31}{4}{30}{5}{31}{6}{30}{7}{31}{8}{31}{9}{30}{10}{31}{11}{30}{12}{31}}}
+      {\__cg_test_fail:n{month~length~#1}}
   }
 \__cg_days_in_month:nnN {2024}{2}\l__cg_month_days_int
 \int_compare:nNnF {\l__cg_month_days_int} = {29}{\__cg_test_fail:n{February~2024~has~29~days}}
@@ -47,6 +47,26 @@
     \int_compare:nNnF{\l__cg_cells_int}={42}{\__cg_test_fail:n{fixed~cell~count~#1}}
   }
 \TYPE{All~seven~week-starts~and~fixed~42-cell~grids~passed}
+\cs_new_protected:Npn \__cg_test_fixed:nn #1#2
+  {
+    \keys_set:nn {calendar-grid}{year=#1,month=#2,week-start=monday,layout=fixed}
+    \__cg_compute_layout:
+    \int_compare:nNnF {\l__cg_cells_int} = {42}
+      {\__cg_test_fail:n{fixed~42-cell~invariant~for~#1-#2}}
+  }
+\__cg_test_fixed:nn {2027}{1}
+\__cg_test_fixed:nn {2027}{2}
+\__cg_test_fixed:nn {2028}{2}
+\__cg_test_fixed:nn {2027}{8}
+\keys_set:nn {calendar-grid}{year=2027,month=2,week-start=monday,layout=fixed}
+\__cg_compute_layout:
+\int_compare:nNnF {\l__cg_first_weekday_int} = {1}
+  {\__cg_test_fail:n{February~2027~should~start~Monday}}
+\keys_set:nn {calendar-grid}{year=2027,month=8,week-start=monday,layout=fixed}
+\__cg_compute_layout:
+\int_compare:nNnF {\l__cg_first_weekday_int} = {7}
+  {\__cg_test_fail:n{August~2027~should~start~Sunday}}
+\TYPE{Fixed~42-cell~checks~passed}
 \keys_set:nn{calendar-grid}{year=2027,month=2,week-start=monday,layout=compact}
 \__cg_compute_layout:
 \int_compare:nNnF{\l__cg_rows_int}={4}{\__cg_test_fail:n{compact~February~2027~rows}}
