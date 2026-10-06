@@ -29,11 +29,11 @@
 \__cg_days_in_month:nnN {2024}{2}\l__cg_month_days_int
 \int_compare:nNnF {\l__cg_month_days_int} = {29}{\__cg_test_fail:n{February~2024~has~29~days}}
 \TYPE{Month-length~checks~passed}
-\__cg_date_serial:nN {2024-01-02}\l__cg_serial_int
+\__cg_serial:nnnN {2024}{1}{2}\l__cg_serial_int
 \int_compare:nNnF {\int_mod:nn{\l__cg_serial_int}{7}+1} = {2}{\__cg_test_fail:n{2024~weekday}}
-\__cg_date_serial:nN {2000-01-02}\l__cg_serial_int
+\__cg_serial:nnnN {2000}{1}{2}\l__cg_serial_int
 \int_compare:nNnF {\int_mod:nn{\l__cg_serial_int}{7}+1} = {7}{\__cg_test_fail:n{2000~weekday}}
-\__cg_date_serial:nN {1900-01-02}\l__cg_serial_int
+\__cg_serial:nnnN {1900}{1}{2}\l__cg_serial_int
 \int_compare:nNnF {\int_mod:nn{\l__cg_serial_int}{7}+1} = {2}{\__cg_test_fail:n{1900~weekday}}
 \TYPE{Weekday~checks~passed}
 \keys_set:nn{calendar-grid}{year=2027,month=1,layout=fixed}
