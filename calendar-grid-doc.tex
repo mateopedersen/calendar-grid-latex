@@ -71,9 +71,9 @@ The \texttt{month-names}, \texttt{weekday-names}, and \texttt{weekday-short-name
 
 \section{Year overview}
 
-\verb|\CalendarYear[year=2027,columns=3]| renders all twelve months in row-major order. The \texttt{columns} key accepts 1 through 4, so the same command supports one-, two-, three-, or four-column overviews. Week-start, layout, overflow, and label keys are shared with \verb|\CalendarGrid|.
+\texttt{\textbackslash CalendarYear} renders all twelve months in row-major order. Its \texttt{columns} key accepts 1 through 4, so the same command supports one-, two-, three-, or four-column overviews. Week-start, layout, overflow, and label keys are shared with \texttt{\textbackslash CalendarGrid}.
 
-\CalendarYear[year=2027,columns=3,week-start=monday,layout=compact]
+\CalendarYear[year=2027,columns=2,week-start=monday,layout=compact,cell-width=8mm,cell-height=4mm,header-height=4mm]
 
 \section{Events and notes}
 
@@ -100,7 +100,7 @@ Range styles do not prescribe a color or drawing package. The default style make
 
 \section{Formatting hooks}
 
-\verb|\CalendarGridFormatMonthTitle{month name}{year}| formats the month heading. \verb|\CalendarGridFormatDay{ISO}{day}{current}{weekday}{weekend}{row}{column}{events}{ranges}| formats each printed day. The third argument is \texttt{true} for dates in the requested month and \texttt{false} for adjacent-month dates. The weekday number uses Monday = 1 through Sunday = 7; the weekend flag is \texttt{true} for Saturday and Sunday. Row and column indices begin at 1. The final argument is a comma-separated list of active named ranges. The default day hook prints adjacent dates in italics, weekend and range dates in bold, and event text below the number.
+\texttt{\textbackslash CalendarGridFormatMonthTitle} formats the month heading. The \texttt{\textbackslash CalendarGridFormatDay} hook receives, in order: the ISO date, day number, whether the date belongs to the requested month, weekday number, weekend flag, row, column, event text, and active range names. The third argument is \texttt{true} for dates in the requested month and \texttt{false} for adjacent-month dates. The weekday number uses Monday = 1 through Sunday = 7; the weekend flag is \texttt{true} for Saturday and Sunday. Row and column indices begin at 1. The final argument is a comma-separated list of active named ranges. The default day hook prints adjacent dates in italics, weekend and range dates in bold, and event text below the number.
 
 For example, replace the month heading in a document with:
 

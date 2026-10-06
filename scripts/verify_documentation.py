@@ -9,8 +9,13 @@ if not pdf.is_file() or pdf.stat().st_size < 10_000:
     raise SystemExit("calendar-grid-doc.pdf is missing or unexpectedly small")
 if pdf.read_bytes()[:5] != b"%PDF-":
     raise SystemExit("calendar-grid-doc.pdf has no PDF signature")
-contents = pdf.read_bytes()
-pages = len(re.findall(rb"/Type\s*/Page\b", contents))
+log = root / "calendar-grid-doc.log"
+if not log.is_file():
+    raise SystemExit("calendar-grid-doc.log is missing; cannot verify the generated page count")
+match = re.search(r"Output written on .*?\((\d+) pages?\)\.", log.read_text(errors="replace"))
+if not match:
+    raise SystemExit("The XeLaTeX transcript has no successful PDF page-count record")
+pages = int(match.group(1))
 if not 3 <= pages <= 40:
     raise SystemExit(f"Unexpected documentation page count: {pages}")
 print(f"Documentation PDF valid: {pdf.stat().st_size} bytes, {pages} pages")
