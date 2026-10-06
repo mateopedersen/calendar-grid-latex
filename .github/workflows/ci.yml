@@ -26,7 +26,7 @@ jobs:
             lualatex --version | sed -n '1p'
             kpsewhich l3build.lua
             l3build --version || kpsewhich l3build.lua
-            l3build check
+            l3build check || { cat build/test/*.diff; exit 1; }
             l3build doc
             test -s calendar-grid-doc.pdf
             python3 scripts/verify_documentation.py
