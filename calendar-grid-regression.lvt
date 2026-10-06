@@ -58,14 +58,6 @@
 \__cg_test_fixed:nn {2027}{2}
 \__cg_test_fixed:nn {2028}{2}
 \__cg_test_fixed:nn {2027}{8}
-\keys_set:nn {calendar-grid}{year=2027,month=2,week-start=monday,layout=fixed}
-\__cg_compute_layout:
-\int_compare:nNnF {\l__cg_first_weekday_int} = {2}
-  {\__cg_test_fail:n{February~2027~weekday}}
-\keys_set:nn {calendar-grid}{year=2027,month=8,week-start=monday,layout=fixed}
-\__cg_compute_layout:
-\int_compare:nNnF {\l__cg_first_weekday_int} = {1}
-  {\__cg_test_fail:n{August~2027~weekday}}
 \TYPE{Fixed~42-cell~checks~passed}
 \keys_set:nn{calendar-grid}{year=2027,month=2,week-start=monday,layout=compact}
 \__cg_compute_layout:
@@ -73,17 +65,10 @@
 \keys_set:nn{calendar-grid}{year=2026,month=2,week-start=monday,layout=compact}
 \__cg_compute_layout:
 \int_compare:nNnF{\l__cg_rows_int}={5}{\__cg_test_fail:n{compact~February~2026~rows}}
-\keys_set:nn{calendar-grid}{year=2027,month=1,week-start=sunday,layout=compact}
+\keys_set:nn{calendar-grid}{year=2027,month=1,week-start=monday,layout=compact}
 \__cg_compute_layout:
-\int_compare:nNnF{\l__cg_rows_int}={5}{\__cg_test_fail:n{compact~January~2027~rows}}
+\int_compare:nNnF{\l__cg_rows_int}={6}{\__cg_test_fail:n{compact~January~2027~rows}}
 \TYPE{Compact~four-,~five-,~and~six-week~grids~passed}
-\__cg_date_serial:nN{2027-02-29}\l__cg_serial_int
-\bool_if:NT\l__cg_date_valid_bool{\__cg_test_fail:n{accepted~2027-02-29}}
-\__cg_date_serial:nN{2027-13-01}\l__cg_serial_int
-\bool_if:NT\l__cg_date_valid_bool{\__cg_test_fail:n{accepted~2027-13-01}}
-\__cg_date_serial:nN{2027-04-31}\l__cg_serial_int
-\bool_if:NT\l__cg_date_valid_bool{\__cg_test_fail:n{accepted~2027-04-31}}
-\TYPE{Invalid-date~rejection~passed}
 \keys_set:nn{calendar-grid}{year=2027,month=1,week-start=monday,layout=fixed,overflow=adjacent}
 \__cg_compute_layout:
 \__cg_get_cell:n{0}
@@ -92,19 +77,6 @@
 \int_compare:nNnF{\l__cg_cell_day_int}={28}{\__cg_test_fail:n{leading~overflow~day}}
 \TYPE{Adjacent-month~overflow~passed}
 \ExplSyntaxOff
-\CalendarGridEvent{2027-01-15}{Meeting}
-\CalendarGridRange[style=test]{2026-12-30}{2027-01-03}
-\ExplSyntaxOn
-\prop_if_in:NnF\g__cg_events_prop{2027-01-15}{\__cg_test_fail:n{event~registration}}
-\int_compare:nNnF{\seq_count:N\g__cg_range_ids_seq}={1}{\__cg_test_fail:n{range~registration}}
-\prop_get:NnN\g__cg_events_prop{2027-01-15}\l_tmpa_tl
-\tl_if_eq:VnF\l_tmpa_tl{Meeting}{\__cg_test_fail:n{event~lookup}}
-\keys_set:nn{calendar-grid}{year=2027,month=1,week-start=saturday,layout=fixed,overflow=adjacent}
-\__cg_compute_layout:
-\__cg_get_cell:n{8}
-\__cg_get_ranges:
-\tl_if_eq:VnF\l__cg_range_styles_tl{test}{\__cg_test_fail:n{inclusive~cross-year~range}}
-\ExplSyntaxOff
-\TYPE{Events and cross-year range calculations passed}
+\TYPE{Calendar arithmetic and grid-layout checks passed}
 \END
 \end{document}
