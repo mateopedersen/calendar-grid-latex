@@ -14,7 +14,14 @@ with tempfile.TemporaryDirectory(prefix="calendar-grid-install-") as temp:
     subprocess.run(["mktexlsr", str(texmf)], check=True)
     env = os.environ.copy()
     env["TEXMFHOME"] = str(texmf)
-    found = subprocess.run(["kpsewhich", "calendar-grid.sty"], env=env, check=True, capture_output=True, text=True).stdout.strip()
+    found = subprocess.run(
+        ["kpsewhich", "calendar-grid.sty"],
+        env=env,
+        cwd=temp,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
     if Path(found).resolve() != (target / "calendar-grid.sty").resolve():
         raise SystemExit(f"kpsewhich selected the wrong package: {found}")
     consumer = Path(temp) / "consumer.tex"
