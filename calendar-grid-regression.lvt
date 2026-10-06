@@ -41,7 +41,7 @@
   {
     \int_set:Nn\l__cg_week_start_int{#1}
     \__cg_compute_layout:
-    \int_compare:nNnF{\l__cg_offset_int}={\int_case:nn{#1}{{1}{4}{2}{3}{3}{2}{4}{1}{5}{0}{6}{6}{7}{5}}}
+    \int_compare:nNnF{\l__cg_offset_int}={\int_mod:nn{5-#1}{7}}
       {\__cg_test_fail:n{week-start~offset~#1}}
     \int_compare:nNnF{\l__cg_rows_int}={6}{\__cg_test_fail:n{fixed~row~count~#1}}
     \int_compare:nNnF{\l__cg_cells_int}={42}{\__cg_test_fail:n{fixed~cell~count~#1}}
