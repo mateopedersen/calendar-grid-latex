@@ -425,7 +425,7 @@
     \bool_if:NT \l__cg_date_valid_bool
       {
         \prop_get:NnNTF \g__cg_events_prop {#1}\l_tmpa_tl
-          {\tl_put_right:Nn \l_tmpa_tl {\par #2}\prop_gput:NnV \g__cg_events_prop {#1}\l_tmpa_tl}
+          {\tl_put_right:Nn \l_tmpa_tl {\newline #2}\prop_gput:NnV \g__cg_events_prop {#1}\l_tmpa_tl}
           {\prop_gput:Nnn \g__cg_events_prop {#1}{#2}}
       }
     \group_end:
