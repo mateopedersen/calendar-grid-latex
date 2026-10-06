@@ -1,7 +1,7 @@
 -- Copyright (C) 2026 Mateo Pedersen.
 -- This work is distributed under the LaTeX Project Public License 1.3c or later.
 module = "calendar-grid"
-bundle = "calendar-grid"
+bundle = ""
 sourcefiles = {"calendar-grid.sty", "build.lua", "scripts/*.py"}
 installfiles = {"calendar-grid.sty"}
 typesetfiles = {"calendar-grid-doc.tex"}
