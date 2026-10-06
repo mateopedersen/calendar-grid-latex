@@ -1,0 +1,10 @@
+This is a generated file for the l3build validation system.
+Don't change this file in any respect.
+Gregorian leap-year checks passed
+Month-length checks passed
+Weekday checks passed
+All seven week-starts and fixed 42-cell grids passed
+Compact four-, five-, and six-week grids passed
+Invalid-date rejection passed
+Adjacent-month overflow passed
+Events, ranges, month rendering, and year overview compiled

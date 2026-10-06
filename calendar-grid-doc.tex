@@ -1,0 +1,133 @@
+\documentclass[11pt]{article}
+% Copyright (C) 2026 Mateo Pedersen.
+% This work is distributed under LPPL 1.3c or later; see LICENSE.
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{calendar-grid}
+\usepackage[margin=25mm]{geometry}
+\hypersetup{colorlinks=true,urlcolor=blue,linkcolor=blue}
+\setlength{\parskip}{.5em}
+\setlength{\parindent}{0pt}
+\title{Calendar Grid\\\large Deterministic month and year grids for LaTeX}
+\author{Mateo Pedersen\\Beta Calendars}
+\date{Version 1.0.0\\6 October 2026}
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Introduction}
+
+Calendar Grid is a presentation-neutral LaTeX3 package for typesetting Gregorian month grids and year overviews. It keeps calendar arithmetic independent of the TeX engine and lets the document author control the surrounding typography and page layout. The ordinary month renderer uses a semantic table and does not load TikZ.
+
+The intended uses include planners, technical reports, teaching schedules, project plans, and other documents that need small reusable calendars rather than a complete wall-calendar design. Packages such as \texttt{wallcalendar} focus on page layouts and photographs; \texttt{tikzcalendarnotes} decorates TikZ calendars; timetable packages model classes or dated schedules. Calendar Grid instead supplies deterministic month and year grid structures that can be placed inside ordinary documents.
+
+\section{Design and date model}
+
+All arithmetic uses the proleptic Gregorian calendar for civil years 0001--9999. Leap years are years divisible by four, except century years not divisible by 400. Weekdays are derived from an integer Julian day number; they do not depend on the compilation date, the operating system clock, time zone, locale, or TeX engine. Date-taking commands require the exact ASCII form \texttt{YYYY-MM-DD}. Invalid dates are reported as package errors and are never silently normalized.
+
+The package does not currently calculate ISO week numbers. They are omitted so that year-boundary week-year metadata cannot be confused with the ordinary Gregorian year.
+
+\section{Installation and compatibility}
+
+Copy \texttt{calendar-grid.sty} into a directory searched by the TeX installation, or place it beside the document being compiled. The only runtime dependency is the standard \texttt{array} package. The package requires a LaTeX format dated 2020-10-01 or later and is designed for pdfLaTeX, XeLaTeX, and LuaLaTeX. It uses the document's existing fonts and requires no shell escape, external programs, network access, or bundled font files.
+
+\section{Quick start}
+
+\begin{verbatim}
+\documentclass{article}
+\usepackage{calendar-grid}
+\begin{document}
+\CalendarGrid[
+  year=2027,
+  month=1,
+  week-start=monday,
+  layout=fixed,
+  overflow=adjacent
+]
+\end{document}
+\end{verbatim}
+
+\CalendarGrid[year=2027,month=1,week-start=monday,layout=compact,overflow=adjacent]
+
+\section{Month grids}
+
+The command \verb|\CalendarGrid[options]| renders one month. \texttt{year} accepts 1--9999 and \texttt{month} accepts 1--12. Their stable defaults are 2027 and 1; spelling them out in documents makes the intended date particularly clear.
+
+\begin{description}
+\item[\texttt{week-start}] One of \texttt{monday}, \texttt{tuesday}, \texttt{wednesday}, \texttt{thursday}, \texttt{friday}, \texttt{saturday}, or \texttt{sunday}. The weekday heading row rotates to match this choice, and the first date is placed below its matching heading.
+\item[\texttt{layout=fixed}] Always creates six rows and seven columns (42 date positions). The configured cell and header dimensions make its geometry stable from month to month.
+\item[\texttt{layout=compact}] Creates only the four, five, or six week rows needed for the selected first weekday and month.
+\item[\texttt{overflow=adjacent}] Prints the previous and next month's day numbers in leading and trailing positions, styled in italics by default.
+\item[\texttt{overflow=blank}] Leaves overflow positions empty while preserving the selected grid's row and column geometry.
+\end{description}
+
+\subsection{Dimensions}
+
+\texttt{cell-width}, \texttt{cell-height}, and \texttt{header-height} accept ordinary TeX dimensions. A fixed grid's day cells use the requested height and width. Notes that do not fit may extend visually beyond a fixed-height cell, so long notes are best given a shorter marker or handled by a custom style. \texttt{row-gap} sets the extra row height and \texttt{column-gap} sets the tabular column padding. No paper size is assumed.
+
+\subsection{Label lists}
+
+The \texttt{month-names}, \texttt{weekday-names}, and \texttt{weekday-short-names} keys accept comma-separated lists of exactly 12, 7, and 7 labels respectively. Weekday lists are ordered Monday through Sunday; \texttt{week-start} rotates the headings. This manual label interface works with any document language and does not claim automatic integration with Babel.
+
+\section{Year overview}
+
+\verb|\CalendarYear[year=2027,columns=3]| renders all twelve months in row-major order. The \texttt{columns} key accepts 1 through 4, so the same command supports one-, two-, three-, or four-column overviews. Week-start, layout, overflow, and label keys are shared with \verb|\CalendarGrid|.
+
+\CalendarYear[year=2027,columns=3,week-start=monday,layout=compact]
+
+\section{Events and notes}
+
+Register notes before rendering a month. Repeating a date appends another note to that cell.
+
+\begin{verbatim}
+\CalendarGridEvent{2027-01-15}{Project review}
+\CalendarGridEvent{2027-01-15}{Send minutes}
+\CalendarGrid[year=2027,month=1]
+\end{verbatim}
+
+Events are keyed by their validated ISO date and can be defined in the preamble or document body. The default day style prints the note below the day number in a smaller size. Long notes can increase the natural height of a compact row; in a fixed grid they can extend past the configured box. A document can shorten the note or redefine the day hook.
+
+\section{Date ranges}
+
+Ranges are inclusive and can cross any month or year boundary. The optional \texttt{style} value is a name supplied to the day-formatting hook; overlapping range names are passed as a comma-separated list.
+
+\begin{verbatim}
+\CalendarGridRange[style=conference]{2026-12-28}{2027-01-08}
+\CalendarGrid[year=2027,month=1]
+\end{verbatim}
+
+Range styles do not prescribe a color or drawing package. The default style makes current-month range dates bold. A custom hook can use the style-name list to draw a rule, tint a cell using the document's existing color setup, or add a symbol.
+
+\section{Formatting hooks}
+
+\verb|\CalendarGridFormatMonthTitle{month name}{year}| formats the month heading. \verb|\CalendarGridFormatDay{ISO}{day}{current}{weekday}{weekend}{row}{column}{events}{ranges}| formats each printed day. The third argument is \texttt{true} for dates in the requested month and \texttt{false} for adjacent-month dates. The weekday number uses Monday = 1 through Sunday = 7; the weekend flag is \texttt{true} for Saturday and Sunday. Row and column indices begin at 1. The final argument is a comma-separated list of active named ranges. The default day hook prints adjacent dates in italics, weekend and range dates in bold, and event text below the number.
+
+For example, replace the month heading in a document with:
+
+\begin{verbatim}
+\RenewDocumentCommand\CalendarGridFormatMonthTitle{mm}{%
+  \par\smallskip\centering\Large\sffamily\bfseries #1 -- #2\par\medskip}
+\end{verbatim}
+
+Redefine \verb|\CalendarGridFormatDay| when a project needs a different weekend style, event marker, notes position, or range treatment. It is called once for each visible date cell in adjacent mode and once for each in-month date in blank-overflow mode.
+
+\section{Reproducible 2026--2027 example}
+
+These four grids are generated from month and year inputs; their date positions are not manually enumerated. The sequence exercises a 30-day month, a 31-day month, the transition to 2027, and the 28-day February.
+
+\CalendarGrid[year=2026,month=11,layout=compact]
+\CalendarGrid[year=2026,month=12,layout=compact]
+\CalendarGrid[year=2027,month=1,layout=compact]
+\CalendarGrid[year=2027,month=2,layout=compact]
+
+\section{Regression tests and limitations}
+
+Run \verb|l3build check| to exercise the regression file with pdfTeX, XeTeX, and LuaTeX. It checks Gregorian leap rules, every month length, known weekdays, week-start offsets, fixed-grid size, compact four-week calculation, invalid-date rejection, events, ranges, and year rendering. Run \verb|l3build doc| to build this guide. The 1.0.0 release intentionally does not provide ISO week numbers, automatic localization, current-day highlighting, or color-specific styling.
+
+\section{Project and license}
+
+Calendar Grid is maintained by Mateo Pedersen as part of the Beta Calendars developer tooling project. Project information: \url{https://www.betacalendars.com/}. Source repository and issue tracker: \url{https://github.com/mateopedersen/calendar-grid-latex}.
+
+This work may be distributed and/or modified under the conditions of the LaTeX Project Public License, version 1.3c or (at your option) any later version. LPPL maintenance status: maintained. The license text is at \url{https://www.latex-project.org/lppl/lppl-1-3c.txt}.
+
+\end{document}

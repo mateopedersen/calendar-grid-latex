@@ -1,0 +1,17 @@
+This work consists of the files listed below.
+
+calendar-grid.sty
+calendar-grid-doc.tex
+calendar-grid-doc.pdf
+README.md
+LICENSE
+CHANGELOG.md
+manifest.txt
+build.lua
+calendar-grid-example-basic-month.tex
+calendar-grid-example-fixed-grid.tex
+calendar-grid-example-year-overview.tex
+calendar-grid-example-events.tex
+calendar-grid-example-ranges.tex
+calendar-grid-regression.lvt
+calendar-grid-regression.tlg

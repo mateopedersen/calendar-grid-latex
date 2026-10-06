@@ -1,0 +1,23 @@
+name: TeX package checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: xu-cheng/texlive-action@v3
+        with:
+          scheme: full
+          run: |
+            l3build check
+            l3build doc
+            l3build ctan
+            python3 scripts/verify_ctan_archive.py
